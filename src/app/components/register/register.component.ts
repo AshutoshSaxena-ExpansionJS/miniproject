@@ -38,11 +38,25 @@ export class RegisterComponent {
     return password === confirmPassword ? null : { mismatch: true };
   }
 
+  private formatDate(date: any): string {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+  }
+
   onSubmit() {
     if (this.registerForm.valid) {
       const { passwordGroup, ...registrationData } = this.registerForm.value;
-      this.apiService.register(registrationData).subscribe(response => {
-        this.router.navigate(['/login']);
+  
+      registrationData.password = this.registerForm.value.passwordGroup.password;
+      registrationData.date_of_birth = this.formatDate(this.registerForm.value.date_of_birth);
+  
+      console.log('Sending Data:', registrationData); 
+  
+      this.apiService.register(registrationData).subscribe({
+        next: (response) => {
+          console.log('Registration successful:', response);
+          this.router.navigate(['/login']);
+        }
       });
     }
   }

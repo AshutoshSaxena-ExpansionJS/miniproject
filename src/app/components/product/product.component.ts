@@ -83,15 +83,24 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  private formatDate(date: any): string {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+  }
+
   onSubmit(): void {
     if (this.productForm.valid) {
       const productData = this.productForm.value;
+      if (productData.manufacture_date) {
+        productData.manufacture_date = this.formatDate(productData.manufacture_date);
+      }
       if (this.isEditMode && this.currentProductId !== null) {
         this.apiService.updateProduct(this.currentProductId, productData).subscribe(() => {
           this.loadProducts();
           this.dialog.closeAll();
         });
       } else {
+        console.log('API Request - Create Product:', productData);
         this.apiService.createProduct(productData).subscribe(() => {
           this.loadProducts();
           this.dialog.closeAll();

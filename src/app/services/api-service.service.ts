@@ -28,9 +28,9 @@ export class ApiServiceService {
     return this.http.post(`${this.baseUrl}token/refresh/`, {refresh});
   }
 
-  getProducts(): Observable<Product[]> {
+  getProducts(): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.get<Product[]>(`${this.baseUrl}products/`, {headers});
+    return this.http.get(`${this.baseUrl}products/`, {headers});
   }
 
   getProduct(id: number): Observable<Product> {
