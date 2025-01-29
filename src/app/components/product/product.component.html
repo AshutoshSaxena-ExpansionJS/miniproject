@@ -1,0 +1,131 @@
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold mb-6 text-center">Product List</h2>
+  
+    <mat-form-field appearance="fill" class="w-full mb-4">
+      <mat-label>Search</mat-label>
+      <input matInput #searchInput (keyup)="applyFilter(searchInput.value)" placeholder="Search products">
+    </mat-form-field>
+  
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 w-full">
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let product"> {{product.id}} </td>
+      </ng-container>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let product"> {{product.name}} </td>
+      </ng-container>
+  
+      <!-- Price Column -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+        <td mat-cell *matCellDef="let product"> {{product.price}} </td>
+      </ng-container>
+  
+      <!-- Category Column -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+        <td mat-cell *matCellDef="let product"> {{product.category}} </td>
+      </ng-container>
+  
+      <!-- Manufacture Date Column -->
+      <ng-container matColumnDef="manufacture_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Manufacture Date </th>
+        <td mat-cell *matCellDef="let product"> {{product.manufacture_date | date:'short'}} </td>
+      </ng-container>
+  
+      <!-- Stock Status Column -->
+      <ng-container matColumnDef="stock_status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Stock Status </th>
+        <td mat-cell *matCellDef="let product"> {{product.stock_status ? 'In Stock' : 'Out of Stock'}} </td>
+      </ng-container>
+  
+      <!-- Discount Available Column -->
+      <ng-container matColumnDef="discount_available">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Discount Available </th>
+        <td mat-cell *matCellDef="let product"> {{product.discount_available ? 'Yes' : 'No'}} </td>
+      </ng-container>
+  
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Actions </th>
+        <td mat-cell *matCellDef="let product">
+          <button mat-button (click)="openEditProductForm(product)">Edit</button>
+          <button mat-button (click)="openDeleteConfirmation(product.id)">Delete</button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <button mat-fab color="primary" class="fixed bottom-4 right-4" (click)="openAddProductForm()">
+      <mat-icon>add</mat-icon>
+    </button>
+  
+    <ng-template #productFormTemplate>
+      <h2 mat-dialog-title>{{isEditMode ? 'Edit Product' : 'Add Product'}}</h2>
+      <mat-dialog-content>
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Product Name</mat-label>
+            <input matInput formControlName="name" required>
+            <mat-error *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+              Product Name is required and should be at least 3 characters long.
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Price</mat-label>
+            <input matInput type="number" formControlName="price" required>
+            <mat-error *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+              Price is required and should be a positive number.
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category" required>
+              <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched">
+              Category is required.
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Manufacture Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="manufacture_date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+  
+          <mat-radio-group formControlName="stock_status" class="w-full mb-4">
+            <mat-radio-button value="true">In Stock</mat-radio-button>
+            <mat-radio-button value="false">Out of Stock</mat-radio-button>
+          </mat-radio-group>
+  
+          <mat-checkbox formControlName="discount_available" class="w-full mb-4">Discount Available</mat-checkbox>
+  
+          <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" maxlength="200"></textarea>
+          </mat-form-field>
+  
+          <button mat-raised-button color="primary" type="submit" class="w-full">Save</button>
+        </form>
+      </mat-dialog-content>
+    </ng-template>
+  
+    <ng-template #deleteConfirmationTemplate let-data>
+      <h2 mat-dialog-title>Confirm Delete</h2>
+      <mat-dialog-content>Are you sure you want to delete this product?</mat-dialog-content>
+      <mat-dialog-actions>
+        <button mat-button (click)="deleteProduct(data)">Yes</button>
+        <button mat-button mat-dialog-close>No</button>
+      </mat-dialog-actions>
+    </ng-template>
+  </div>

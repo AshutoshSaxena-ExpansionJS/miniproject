@@ -12,6 +12,7 @@ export interface UserLogin{
 }
 
 export interface Product{
+    id: number | null;
     name: string;
     category: string;
     manufacture_date: string;
@@ -19,5 +20,5 @@ export interface Product{
     discount_available: boolean;
     description: string;
     price: number;
-    photo?: string;
+    photo: string | null | undefined | File;
 }

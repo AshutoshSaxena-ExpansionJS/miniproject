@@ -28,28 +28,28 @@ export class ApiServiceService {
     return this.http.post(`${this.baseUrl}token/refresh/`, {refresh});
   }
 
-  getProducts(): Observable<any> {
+  getProducts(): Observable<Product[]> {
     const headers = this.getAuthHeaders();
-    return this.http.get(`${this.baseUrl}products/`, {headers});
+    return this.http.get<Product[]>(`${this.baseUrl}products/`, {headers});
   }
 
-  getProduct(id: number): Observable<any> {
+  getProduct(id: number): Observable<Product> {
     const headers = this.getAuthHeaders();
-    return this.http.get(`${this.baseUrl}products/${id}/`, {headers});
+    return this.http.get<Product>(`${this.baseUrl}products/${id}/`, {headers});
   }
 
-  createProduct(data: Product): Observable<any> {
+  createProduct(data: any): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.post(`${this.baseUrl}products/`, data, {headers});
   }
 
-  updateProduct(id: number, data: Product): Observable<any> {
+  updateProduct(id: number, data: Product): Observable<Product> {
     const headers = this.getAuthHeaders();
-    return this.http.put(`${this.baseUrl}products/${id}/`, data, {headers});
+    return this.http.put<Product>(`${this.baseUrl}products/${id}/`, data, {headers});
   }
 
-  deleteProduct(id: number): Observable<any> {
+  deleteProduct(id: number): Observable<void> {
     const headers = this.getAuthHeaders();
-    return this.http.delete(`${this.baseUrl}products/${id}/`, {headers});
+    return this.http.delete<void>(`${this.baseUrl}products/${id}/`, {headers});
   }
 }
