@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { Product, UserRegistration, UserLogin } from '../models';
 
 @Injectable({
@@ -129,27 +129,24 @@ export class ApiServiceService {
   }
 
   register(data: UserRegistration): Observable<any> {
-    // Simulate registration by storing user data in localStorage
     localStorage.setItem('user', JSON.stringify(data));
     return of({ message: 'Registration successful' });
   }
 
   login(data: UserLogin): Observable<any> {
-    // Simulate login by checking stored user data and setting tokens
     const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-    console.log('Stored User:', storedUser); // Debugging step
-    console.log('Login Data:', data); // Debugging step
+    console.log('Stored User:', storedUser); 
+    console.log('Login Data:', data); 
     if (storedUser.username === data.username && storedUser.password === data.password) {
       localStorage.setItem(this.tokenKey, 'dummy-access-token');
       localStorage.setItem(this.refreshTokenKey, 'dummy-refresh-token');
       return of({ access_token: 'dummy-access-token', refresh_token: 'dummy-refresh-token' });
     } else {
-      throw new Error('Invalid credentials');
+      return throwError(() => new Error('Invalid credentials'));
     }
   }
 
   refreshToken(refresh: string): Observable<any> {
-    // Simulate token refresh
     if (refresh === 'dummy-refresh-token') {
       return of({ access_token: 'new-dummy-access-token' });
     } else {
