@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 //import { trigger, state, style, animate, transition } from '@angular/animations';
 
@@ -11,10 +12,17 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'miniproject';
-  constructor(private router: Router) {}
+
+  @ViewChild('logoutConfirmationTemplate') logoutConfirmationTemplate!: TemplateRef<any>;
+
+  constructor(private router: Router, private dialog: MatDialog) {}
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('access_token');
+  }
+
+  openLogoutConfirmation(): void {
+    this.dialog.open(this.logoutConfirmationTemplate);
   }
 
   logout(): void {

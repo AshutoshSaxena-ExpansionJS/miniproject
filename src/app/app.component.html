@@ -2,8 +2,17 @@
   <div class="flex items-center">
     <h1 class="text-xl font-bold">Miniproject</h1>
   </div>
-  <button *ngIf="isLoggedIn()" mat-button (click)="logout()">Logout</button>
+  <button *ngIf="isLoggedIn()" mat-button (click)="openLogoutConfirmation()">Logout</button>
 </header>
 <main class="flex items-center justify-center bg-gray-100">
   <router-outlet></router-outlet>
 </main>
+
+<ng-template #logoutConfirmationTemplate>
+  <h2 mat-dialog-title>Confirm Logout</h2>
+  <mat-dialog-content>Are you sure you want to logout?</mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="logout()" mat-dialog-close>Yes</button>
+    <button mat-button mat-dialog-close>No</button>
+  </mat-dialog-actions>
+</ng-template>
