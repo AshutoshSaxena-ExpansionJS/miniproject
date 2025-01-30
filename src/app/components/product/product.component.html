@@ -16,7 +16,7 @@
       <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-        <td mat-cell *matCellDef="let product"> {{product.name}} </td>
+        <td mat-cell *matCellDef="let product" (click)="showDetails(product)"> {{product.name}} </td>
       </ng-container>
   
       <!-- Price Column -->
@@ -115,6 +115,11 @@
             <textarea matInput formControlName="description" maxlength="200"></textarea>
           </mat-form-field>
   
+          <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Image Link</mat-label>
+            <input matInput formControlName="photo">
+          </mat-form-field>
+  
           <button mat-raised-button color="primary" type="submit" class="w-full">Save</button>
         </form>
       </mat-dialog-content>
@@ -124,8 +129,14 @@
       <h2 mat-dialog-title>Confirm Delete</h2>
       <mat-dialog-content>Are you sure you want to delete this product?</mat-dialog-content>
       <mat-dialog-actions>
-        <button mat-button (click)="deleteProduct(data)">Yes</button>
+        <button mat-button (click)="deleteProduct(data)" mat-dialog-close>Yes</button>
         <button mat-button mat-dialog-close>No</button>
       </mat-dialog-actions>
     </ng-template>
+  
+    <div *ngIf="selectedProduct" class="product-details-card">
+      <h3>{{selectedProduct.name}}</h3>
+      <img [src]="selectedProduct.photo" alt="{{selectedProduct.name}}">
+      <p>{{selectedProduct.description}}</p>
+    </div>
   </div>
