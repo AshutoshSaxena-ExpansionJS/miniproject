@@ -1,3 +1,9 @@
-<main class="min-h-screen flex items-center justify-center bg-gray-100">
+<header class="flex justify-between items-center p-4 bg-gray-800 text-white">
+  <div class="flex items-center">
+    <h1 class="text-xl font-bold">Miniproject</h1>
+  </div>
+  <button *ngIf="isLoggedIn()" mat-button (click)="logout()">Logout</button>
+</header>
+<main class="flex items-center justify-center bg-gray-100">
   <router-outlet></router-outlet>
 </main>

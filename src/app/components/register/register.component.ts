@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ApiServiceService } from '../../services/api-service.service';
 import { Validators } from '../../Validators/validators';
 //import { trigger, state, style, animate, transition } from '@angular/animations';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +19,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private apiService: ApiServiceService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.registerForm = this.fb.group({
       username: ['', AngularValidators.required],
@@ -55,6 +57,9 @@ export class RegisterComponent {
       this.apiService.register(registrationData).subscribe({
         next: (response) => {
           console.log('Registration successful:', response);
+          this.snackBar.open('Registration successful', 'Close', {
+            duration: 3000,
+          });
           this.router.navigate(['/login']);
         }
       });

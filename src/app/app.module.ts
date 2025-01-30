@@ -27,7 +27,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { ProductComponent } from './components/product/product.component';
-
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -58,6 +58,7 @@ import { ProductComponent } from './components/product/product.component';
     MatSortModule
   ],
   providers: [
+    AuthGuard,
     provideAnimationsAsync(),
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
