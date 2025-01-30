@@ -115,7 +115,9 @@ export class ProductComponent implements OnInit {
 
   deleteProduct(id: number): void {
     this.apiService.deleteProduct(id).subscribe(() => {
-      this.loadProducts();
+      this.products = this.products.filter(product => product.id !== id);
+      this.dataSource.data = [...this.products];
+      this.dialog.closeAll();
     });
   }
 

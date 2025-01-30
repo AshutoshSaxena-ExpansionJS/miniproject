@@ -1,0 +1,11 @@
+.product-details-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .product-details-card {
+    max-width: 400px;
+    width: 100%;
+  }
